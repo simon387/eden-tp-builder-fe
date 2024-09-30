@@ -14,7 +14,7 @@ export default function Home() {
 				marginBottom: '20px',
 				color: '#333'
 			}}>
-				Inserimento Oggetto
+				Insert New Item
 			</h1>
 			<ComplexInsertObjectForm />
 		</div>
