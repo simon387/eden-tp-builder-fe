@@ -3,11 +3,13 @@ import React, {useEffect, useState} from 'react';
 const ComplexInsertObjectForm = () => {
 	const [name, setName] = useState('');
 	const [type, setType] = useState('');
-	const [livello, setLivello] = useState('');
+	const [slot, setSlot] = useState('');
+	const [level, setLevel] = useState('');
 	const [opzione1, setOpzione1] = useState('');
 	const [opzione2, setOpzione2] = useState('');
 
 	const [types, setTypes] = useState<string[]>([]);
+	const [slots, setSlots] = useState<string[]>([]);
 	const opzioni1 = ['Categoria A', 'Categoria B', 'Categoria C'];
 	const opzioni2 = {
 		'Categoria A': ['A1', 'A2', 'A3'],
@@ -37,6 +39,26 @@ const ComplexInsertObjectForm = () => {
 	}, []);
 
 	useEffect(() => {
+		const fetchSlots = async () => {
+			try {
+				const response = await fetch('http://localhost:8080/api/slot');
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				const data = await response.json();
+
+				const formattedSlots = data.map((item: { slot: string }) => item.slot);
+
+				setSlots(formattedSlots);
+			} catch (error) {
+				console.error('There was a problem with the fetch operation:', error);
+			}
+		};
+
+		fetchSlots();
+	}, []);
+
+	useEffect(() => {
 		setOpzione2('');
 	}, [opzione1]);
 
@@ -44,13 +66,13 @@ const ComplexInsertObjectForm = () => {
 		e.preventDefault();
 		const item = {
 			name: name,
-			livello: parseInt(livello, 10),
+			livello: parseInt(level, 10),
 			opzione1,
 			opzione2,
 		};
 		console.log('Item inserito:', item);
 		setName('');
-		setLivello('');
+		setLevel('');
 		setOpzione1('');
 		setOpzione2('');
 	};
@@ -98,13 +120,24 @@ const ComplexInsertObjectForm = () => {
 					<option key={opt} value={opt}>{opt}</option>
 				))}
 			</select>
+			<select
+				value={slot}
+				onChange={(e) => setSlot(e.target.value)}
+				style={inputStyle}
+			>
+				<option value="">Select Slot</option>
+				{slots.map((opt) => (
+					<option key={opt} value={opt}>{opt}</option>
+				))}
+			</select>
 			<input
 				type="number"
-				value={livello}
-				onChange={(e) => setLivello(e.target.value)}
-				placeholder="Livello"
+				value={level}
+				onChange={(e) => setLevel(e.target.value)}
+				placeholder="Level"
 				required
-				min="0"
+				min="1"
+				max="50"
 				style={inputStyle}
 			/>
 			<select
