@@ -7,13 +7,34 @@ const ComplexInsertObjectForm = () => {
 	const [opzione1, setOpzione1] = useState('');
 	const [opzione2, setOpzione2] = useState('');
 
-	const types = ['Scale'];
+	const [types, setTypes] = useState<string[]>([]);
 	const opzioni1 = ['Categoria A', 'Categoria B', 'Categoria C'];
 	const opzioni2 = {
 		'Categoria A': ['A1', 'A2', 'A3'],
 		'Categoria B': ['B1', 'B2', 'B3'],
 		'Categoria C': ['C1', 'C2', 'C3'],
 	};
+
+	useEffect(() => {
+		const fetchTypes = async () => {
+			try {
+				const response = await fetch('http://localhost:8080/api/itemType');
+				if (!response.ok) {
+					throw new Error('Network response was not ok');
+				}
+				const data = await response.json();
+
+				// Estraiamo solo i valori 'type' mantenendo la capitalizzazione originale
+				const formattedTypes = data.map((item: { type: string }) => item.type);
+
+				setTypes(formattedTypes);
+			} catch (error) {
+				console.error('There was a problem with the fetch operation:', error);
+			}
+		};
+
+		fetchTypes();
+	}, []);
 
 	useEffect(() => {
 		setOpzione2('');
