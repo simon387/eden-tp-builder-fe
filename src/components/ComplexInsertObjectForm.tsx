@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 
 const ComplexInsertObjectForm = () => {
-	const [nome, setNome] = useState('');
+	const [name, setName] = useState('');
+	const [type, setType] = useState('');
 	const [livello, setLivello] = useState('');
 	const [opzione1, setOpzione1] = useState('');
 	const [opzione2, setOpzione2] = useState('');
 
+	const types = ['Scale'];
 	const opzioni1 = ['Categoria A', 'Categoria B', 'Categoria C'];
 	const opzioni2 = {
 		'Categoria A': ['A1', 'A2', 'A3'],
@@ -19,14 +21,14 @@ const ComplexInsertObjectForm = () => {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		const oggetto = {
-			nome,
+		const item = {
+			name: name,
 			livello: parseInt(livello, 10),
 			opzione1,
 			opzione2,
 		};
-		console.log('Oggetto inserito:', oggetto);
-		setNome('');
+		console.log('Item inserito:', item);
+		setName('');
 		setLivello('');
 		setOpzione1('');
 		setOpzione2('');
@@ -59,12 +61,22 @@ const ComplexInsertObjectForm = () => {
 		<form onSubmit={handleSubmit} style={formStyle}>
 			<input
 				type="text"
-				value={nome}
-				onChange={(e) => setNome(e.target.value)}
-				placeholder="Nome"
+				value={name}
+				onChange={(e) => setName(e.target.value)}
+				placeholder="Name"
 				required
 				style={inputStyle}
 			/>
+			<select
+				value={type}
+				onChange={(e) => setType(e.target.value)}
+				style={inputStyle}
+			>
+				<option value="">Select Type</option>
+				{types.map((opt) => (
+					<option key={opt} value={opt}>{opt}</option>
+				))}
+			</select>
 			<input
 				type="number"
 				value={livello}
@@ -96,7 +108,7 @@ const ComplexInsertObjectForm = () => {
 				))}
 			</select>
 			<button type="submit" style={buttonStyle}>
-				Inserisci oggetto
+				Insert Item
 			</button>
 		</form>
 	);
