@@ -142,6 +142,27 @@ const ComplexInsertObjectForm = () => {
 		fetchResist();
 	}, []);
 
+	useEffect(() => {
+		const fetchToAs = async () => {
+			try {
+				const response = await fetch('http://localhost:8080/api/toa');
+				if (response.ok) {
+					const data: string[] = await response.json();
+					setSelBons((prevSelBons) => ({
+						...prevSelBons,
+						Toa: data,
+					}));
+				} else {
+					console.error('Errore nella risposta del servizio:', response.status);
+				}
+			} catch (error) {
+				console.error('Errore nella chiamata API:', error);
+			}
+		};
+
+		fetchToAs();
+	}, []);
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		const item = {
@@ -231,7 +252,6 @@ const ComplexInsertObjectForm = () => {
 						onChange={(e) => setType(e.target.value)}
 						style={inputStyle}
 					>
-						<option value="">Select Type</option>
 						{types.map((opt) => (
 							<option key={opt} value={opt}>{opt}</option>
 						))}
@@ -247,7 +267,6 @@ const ComplexInsertObjectForm = () => {
 						onChange={(e) => setSlot(e.target.value)}
 						style={inputStyle}
 					>
-						<option value="">Select Slot</option>
 						{slots.map((opt) => (
 							<option key={opt} value={opt}>{opt}</option>
 						))}
@@ -288,7 +307,6 @@ const ComplexInsertObjectForm = () => {
 						onChange={(e) => setRealm(e.target.value)}
 						style={inputStyle}
 					>
-						<option value="">Select Realm</option>
 						{realms.map((opt) => (
 							<option key={opt} value={opt}>{opt}</option>
 						))}
@@ -346,7 +364,6 @@ const ComplexInsertObjectForm = () => {
 						disabled={!bonus}
 						style={inputStyle}
 					>
-						<option value="">Select</option>
 						{bonus && selBons[bonus as keyof typeof selBons].map((opt) => (
 							<option key={opt} value={opt}>{opt}</option>
 						))}
