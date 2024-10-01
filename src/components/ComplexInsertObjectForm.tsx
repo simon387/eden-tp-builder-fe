@@ -1,5 +1,10 @@
 import React, {useEffect, useState} from 'react';
 
+// Tipi per TypeScript
+type SelBonsType = {
+	[key: string]: string[];
+};
+
 const ComplexInsertObjectForm = () => {
 	const [name, setName] = useState('');
 	const [type, setType] = useState('');
@@ -15,7 +20,7 @@ const ComplexInsertObjectForm = () => {
 	const [slots, setSlots] = useState<string[]>([]);
 	const [realms, setRealms] = useState<string[]>([]);
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
-	const selBons = {
+	const [selBons, setSelBons] = useState<SelBonsType>({
 		'Stat': ['s1', 's2', 's3'],
 		'Resist': ['r1', 'r2', 'r3'],
 		'Toa': ['t1', 't2', 't3'],
@@ -23,7 +28,7 @@ const ComplexInsertObjectForm = () => {
 		'Melee Skill': ['l1', 'l2', 'l3'],
 		'Cap Bonus': ['c1', 'c2', 'c3'],
 		'Other': ['o1', 'o2', 'o3'],
-	};
+	});
 	const [value, setValue] = useState('');
 
 	useEffect(() => {
@@ -90,6 +95,31 @@ const ComplexInsertObjectForm = () => {
 	useEffect(() => {
 		setSelBonus('');
 	}, [bonus]);
+
+	// Effettua la chiamata API e aggiorna lo stato
+	useEffect(() => {
+		// Funzione per chiamare il servizio REST
+		const fetchStat = async () => {
+			try {
+				const response = await fetch('http://localhost:8080/api/stat');
+				if (response.ok) {
+					const data: string[] = await response.json();
+					// Aggiorna solo la chiave 'Stat' del tuo stato
+					setSelBons((prevSelBons) => ({
+						...prevSelBons,
+						Stat: data, // Rimpiazza 'Stat' con i dati dall'API
+					}));
+				} else {
+					console.error('Errore nella risposta del servizio:', response.status);
+				}
+			} catch (error) {
+				console.error('Errore nella chiamata API:', error);
+			}
+		};
+
+		// Chiamata all'API
+		fetchStat();
+	}, []); // Esegui solo al montaggio del componente
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
