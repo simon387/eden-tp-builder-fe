@@ -10,12 +10,14 @@ const ComplexInsertObjectForm = () => {
 	const [model, setModel] = useState('');
 	const [requiredLevel, setRequiredLevel] = useState('');
 	const [bonusLevel, setBonusLevel] = useState('');
+	const [bonus, setBonus] = useState('');
 	const [opzione1, setOpzione1] = useState('');
 	const [opzione2, setOpzione2] = useState('');
 
 	const [types, setTypes] = useState<string[]>([]);
 	const [slots, setSlots] = useState<string[]>([]);
 	const [realms, setRealms] = useState<string[]>([]);
+	const bonuses = ['Stat', 'Resist', 'Other'];
 	const opzioni1 = ['Categoria A', 'Categoria B', 'Categoria C'];
 	const opzioni2 = {
 		'Categoria A': ['A1', 'A2', 'A3'],
@@ -258,6 +260,22 @@ const ComplexInsertObjectForm = () => {
 
 
 			<h2>Magical Bonuses</h2>
+			<div style={rowStyle}>
+				<div style={columnStyle}>
+					<label htmlFor="bonus">Bonus</label>
+					<select
+						value={bonus}
+						onChange={(e) => setBonus(e.target.value)}
+						style={inputStyle}
+					>
+						<option value="">Select Bonus</option>
+						{bonuses.map((opt) => (
+							<option key={opt} value={opt}>{opt}</option>
+						))}
+					</select>
+				</div>
+			</div>
+
 			<select
 				value={opzione1}
 				onChange={(e) => setOpzione1(e.target.value)}
@@ -279,6 +297,11 @@ const ComplexInsertObjectForm = () => {
 					<option key={opt} value={opt}>{opt}</option>
 				))}
 			</select>
+
+
+
+
+
 			<button type="submit" style={buttonStyle}>
 				Insert Item
 			</button>
