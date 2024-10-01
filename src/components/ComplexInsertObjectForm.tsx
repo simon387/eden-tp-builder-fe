@@ -24,6 +24,7 @@ const ComplexInsertObjectForm = () => {
 		'Cap Bonus': ['c1', 'c2', 'c3'],
 		'Other': ['o1', 'o2', 'o3'],
 	};
+	const [value, setValue] = useState('');
 
 	useEffect(() => {
 		const fetchTypes = async () => {
@@ -131,6 +132,26 @@ const ComplexInsertObjectForm = () => {
 		padding: '10px',
 		fontSize: '16px',
 		backgroundColor: '#4CAF50',
+		color: 'white',
+		border: 'none',
+		borderRadius: '4px',
+		cursor: 'pointer',
+	};
+
+	const buttonStyleClear: React.CSSProperties = {
+		padding: '10px',
+		fontSize: '16px',
+		backgroundColor: '#ad0303',
+		color: 'white',
+		border: 'none',
+		borderRadius: '4px',
+		cursor: 'pointer',
+	};
+
+	const buttonStyleAdd: React.CSSProperties = {
+		padding: '10px',
+		fontSize: '16px',
+		backgroundColor: '#030bad',
 		color: 'white',
 		border: 'none',
 		borderRadius: '4px',
@@ -281,13 +302,30 @@ const ComplexInsertObjectForm = () => {
 					</select>
 				</div>
 				<div style={columnStyle}>
-
+					<label htmlFor="value">Value</label>
+					<input
+						type="number"
+						value={value}
+						onChange={(e) => setValue(e.target.value)}
+						placeholder="Value"
+						required
+						min="1"
+						max="400"
+						style={inputStyle}
+					/>
 				</div>
 			</div>
 
-
+			<button type="button" style={buttonStyleAdd}>
+				+
+			</button>
+			<br/>
+			<br/>
 			<button type="submit" style={buttonStyle}>
 				Insert Item
+			</button>
+			<button type="button" style={buttonStyleClear}>
+				Clear
 			</button>
 		</form>
 	);
