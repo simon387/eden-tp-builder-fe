@@ -121,6 +121,27 @@ const ComplexInsertObjectForm = () => {
 		fetchStat();
 	}, []); // Esegui solo al montaggio del componente
 
+	useEffect(() => {
+		const fetchResist = async () => {
+			try {
+				const response = await fetch('http://localhost:8080/api/resist');
+				if (response.ok) {
+					const data: string[] = await response.json();
+					setSelBons((prevSelBons) => ({
+						...prevSelBons,
+						Resist: data,
+					}));
+				} else {
+					console.error('Errore nella risposta del servizio:', response.status);
+				}
+			} catch (error) {
+				console.error('Errore nella chiamata API:', error);
+			}
+		};
+
+		fetchResist();
+	}, []);
+
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		const item = {
@@ -325,7 +346,7 @@ const ComplexInsertObjectForm = () => {
 						disabled={!bonus}
 						style={inputStyle}
 					>
-						<option value="">Select {selBonus}</option>
+						<option value="">Select</option>
 						{bonus && selBons[bonus as keyof typeof selBons].map((opt) => (
 							<option key={opt} value={opt}>{opt}</option>
 						))}
