@@ -16,7 +16,7 @@ export default function Home() {
 			}}>
 				Insert New Item
 			</h1>
-			<ComplexInsertObjectForm />
+			<ComplexInsertObjectForm/>
 		</div>
 	)
 }
