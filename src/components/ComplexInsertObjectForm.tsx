@@ -257,7 +257,7 @@ const ComplexInsertObjectForm = () => {
 			</div>
 
 
-			<h2>Magial Bonuses</h2>
+			<h2>Magical Bonuses</h2>
 			<select
 				value={opzione1}
 				onChange={(e) => setOpzione1(e.target.value)}
