@@ -21,9 +21,6 @@ const ComplexInsertObjectForm = () => {
 	const [realms, setRealms] = useState<string[]>([]);
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
 	const [selBons, setSelBons] = useState<SelBonsType>({
-		'Stat': ['s1', 's2', 's3'],
-		'Resist': ['r1', 'r2', 'r3'],
-		'Toa': ['t1', 't2', 't3'],
 		'Magic Skill': ['m1', 'm2', 'm3'],
 		'Melee Skill': ['l1', 'l2', 'l3'],
 		'Cap Bonus': ['c1', 'c2', 'c3'],
