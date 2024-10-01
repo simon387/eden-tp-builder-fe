@@ -4,25 +4,25 @@ const ComplexInsertObjectForm = () => {
 	const [name, setName] = useState('');
 	const [type, setType] = useState('');
 	const [slot, setSlot] = useState('');
-	const [level, setLevel] = useState('');
 	const [realm, setRealm] = useState('');
 	const [tradeable, setTradeable] = useState('Yes');
 	const [model, setModel] = useState('');
 	const [requiredLevel, setRequiredLevel] = useState('');
 	const [bonusLevel, setBonusLevel] = useState('');
 	const [bonus, setBonus] = useState('');
-	const [opzione1, setOpzione1] = useState('');
-	const [opzione2, setOpzione2] = useState('');
-
+	const [selBonus, setSelBonus] = useState('');
 	const [types, setTypes] = useState<string[]>([]);
 	const [slots, setSlots] = useState<string[]>([]);
 	const [realms, setRealms] = useState<string[]>([]);
-	const bonuses = ['Stat', 'Resist', 'Other'];
-	const opzioni1 = ['Categoria A', 'Categoria B', 'Categoria C'];
-	const opzioni2 = {
-		'Categoria A': ['A1', 'A2', 'A3'],
-		'Categoria B': ['B1', 'B2', 'B3'],
-		'Categoria C': ['C1', 'C2', 'C3'],
+	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
+	const selBons = {
+		'Stat': ['s1', 's2', 's3'],
+		'Resist': ['r1', 'r2', 'r3'],
+		'Toa': ['t1', 't2', 't3'],
+		'Magic Skill': ['m1', 'm2', 'm3'],
+		'Melee Skill': ['l1', 'l2', 'l3'],
+		'Cap Bonus': ['c1', 'c2', 'c3'],
+		'Other': ['o1', 'o2', 'o3'],
 	};
 
 	useEffect(() => {
@@ -87,22 +87,18 @@ const ComplexInsertObjectForm = () => {
 	}, []);
 
 	useEffect(() => {
-		setOpzione2('');
-	}, [opzione1]);
+		setSelBonus('');
+	}, [bonus]);
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		const item = {
 			name: name,
-			livello: parseInt(level, 10),
-			opzione1,
-			opzione2,
+			// livello: parseInt(level, 10),
+
 		};
 		console.log('Item inserito:', item);
 		setName('');
-		setLevel('');
-		setOpzione1('');
-		setOpzione2('');
 	};
 
 	const formStyle: React.CSSProperties = {
@@ -196,9 +192,6 @@ const ComplexInsertObjectForm = () => {
 						<option value="no">No</option>
 					</select>
 				</div>
-			</div>
-
-			<div style={rowStyle}>
 				<div style={columnStyle}>
 					<label htmlFor="model">Model</label>
 					<input
@@ -212,7 +205,6 @@ const ComplexInsertObjectForm = () => {
 						style={inputStyle}
 					/>
 				</div>
-				<div style={columnStyle}></div>
 			</div>
 
 			<h2>Restrictions</h2>
@@ -274,32 +266,24 @@ const ComplexInsertObjectForm = () => {
 						))}
 					</select>
 				</div>
+				<div style={columnStyle}>
+					<label htmlFor="selBons">{bonus || "Select Bonus"}</label>
+					<select
+						value={selBonus}
+						onChange={(e) => setSelBonus(e.target.value)}
+						disabled={!bonus}
+						style={inputStyle}
+					>
+						<option value="">Select {selBonus}</option>
+						{bonus && selBons[bonus as keyof typeof selBons].map((opt) => (
+							<option key={opt} value={opt}>{opt}</option>
+						))}
+					</select>
+				</div>
+				<div style={columnStyle}>
+
+				</div>
 			</div>
-
-			<select
-				value={opzione1}
-				onChange={(e) => setOpzione1(e.target.value)}
-				style={inputStyle}
-			>
-				<option value="">Seleziona Opzione 1</option>
-				{opzioni1.map((opt) => (
-					<option key={opt} value={opt}>{opt}</option>
-				))}
-			</select>
-			<select
-				value={opzione2}
-				onChange={(e) => setOpzione2(e.target.value)}
-				disabled={!opzione1}
-				style={inputStyle}
-			>
-				<option value="">Seleziona Opzione 2</option>
-				{opzione1 && opzioni2[opzione1 as keyof typeof opzioni2].map((opt) => (
-					<option key={opt} value={opt}>{opt}</option>
-				))}
-			</select>
-
-
-
 
 
 			<button type="submit" style={buttonStyle}>
