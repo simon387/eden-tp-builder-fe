@@ -368,7 +368,6 @@ const ComplexInsertObjectForm = () => {
 							onChange={(e) => updateBonusRow(index, 'bonus', e.target.value)}
 							style={styles.inputStyle}
 						>
-							{/*<option>Select</option>*/}
 							{bonuses.map((opt) => (
 								<option key={opt} value={opt}>{opt}</option>
 							))}
