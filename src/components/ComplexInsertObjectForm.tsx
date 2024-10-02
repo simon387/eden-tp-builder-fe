@@ -26,7 +26,7 @@ const ComplexInsertObjectForm = () => {
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
 	const [selBons, setSelBons] = useState<SelBonsType>({});
 	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
-		{bonus: '', selBonus: '', value: ''}
+		{bonus: bonuses[0], selBonus: '', value: ''}
 	]);
 
 	const slots = useSlots();
@@ -250,7 +250,11 @@ const ComplexInsertObjectForm = () => {
 	};
 
 	const addBonusRow = () => {
-		setBonusRows([...bonusRows, {bonus: '', selBonus: '', value: ''}]);
+		const firstBonus = bonuses[0];
+		setBonusRows([
+			...bonusRows,
+			{ bonus: firstBonus, selBonus: selBons[firstBonus]?.[0] || '', value: '' }
+		]);
 	};
 
 	const removeBonusRow = (index: number) => {
@@ -263,7 +267,12 @@ const ComplexInsertObjectForm = () => {
 	const updateBonusRow = (index: number, field: keyof BonusRow, value: string) => {
 		const newRows = bonusRows.map((row, i) => {
 			if (i === index) {
-				return {...row, [field]: value};
+				const updatedRow = { ...row, [field]: value };
+				// Se si aggiorna il campo 'bonus', aggiorna anche il 'selBonus'
+				if (field === 'bonus') {
+					updatedRow.selBonus = selBons[value]?.[0] || '';  // Imposta il primo valore disponibile
+				}
+				return updatedRow;
 			}
 			return row;
 		});
@@ -279,7 +288,8 @@ const ComplexInsertObjectForm = () => {
 		setModel('');
 		setRequiredLevel('');
 		setBonusLevel('');
-		setBonusRows([{bonus: bonuses[0], selBonus: selBons[bonuses[0]][0], value: ''}]);
+		// Imposta selBonus come il primo valore della lista corrispondente a 'Stat'
+		setBonusRows([{ bonus: bonuses[0], selBonus: selBons[bonuses[0]]?.[0] || '', value: '' }]);
 	};
 
 	return (
@@ -413,10 +423,10 @@ const ComplexInsertObjectForm = () => {
 						<select
 							value={row.selBonus}
 							onChange={(e) => updateBonusRow(index, 'selBonus', e.target.value)}
-							disabled={!row.bonus}
+							disabled={!row.bonus || !selBons[row.bonus]}
 							style={styles.inputStyle}
 						>
-							{row.bonus && selBons[row.bonus as keyof typeof selBons].map((opt) => (
+							{row.bonus && selBons[row.bonus] && selBons[row.bonus].map((opt) => (
 								<option key={opt} value={opt}>{opt}</option>
 							))}
 						</select>
