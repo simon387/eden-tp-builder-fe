@@ -5,6 +5,12 @@ type SelBonsType = {
 	[key: string]: string[];
 };
 
+type BonusRow = {
+	bonus: string;
+	selBonus: string;
+	value: string;
+};
+
 const ComplexInsertObjectForm = () => {
 	const [name, setName] = useState('');
 	const [type, setType] = useState('');
@@ -14,19 +20,14 @@ const ComplexInsertObjectForm = () => {
 	const [model, setModel] = useState('');
 	const [requiredLevel, setRequiredLevel] = useState('');
 	const [bonusLevel, setBonusLevel] = useState('');
-	const [bonus, setBonus] = useState('');
-	const [selBonus, setSelBonus] = useState('');
 	const [types, setTypes] = useState<string[]>([]);
 	const [slots, setSlots] = useState<string[]>([]);
 	const [realms, setRealms] = useState<string[]>([]);
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
-	const [selBons, setSelBons] = useState<SelBonsType>({
-		'Magic Skill': ['m1', 'm2', 'm3'],
-		'Melee Skill': ['l1', 'l2', 'l3'],
-		'Cap Bonus': ['c1', 'c2', 'c3'],
-		'Other': ['o1', 'o2', 'o3'],
-	});
-	const [value, setValue] = useState('');
+	const [selBons, setSelBons] = useState<SelBonsType>({});
+	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
+		{bonus: '', selBonus: '', value: ''}
+	]);
 
 	useEffect(() => {
 		const fetchTypes = async () => {
@@ -88,10 +89,6 @@ const ComplexInsertObjectForm = () => {
 
 		fetchRealms();
 	}, []);
-
-	useEffect(() => {
-		setSelBonus('');
-	}, [bonus]);
 
 	useEffect(() => {
 		// Funzione per chiamare il servizio REST
@@ -246,13 +243,53 @@ const ComplexInsertObjectForm = () => {
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		const item = {
-			name: name,
-			// livello: parseInt(level, 10),
-
+			name,
+			type,
+			slot,
+			realm,
+			tradeable,
+			model,
+			requiredLevel,
+			bonusLevel,
+			bonuses: bonusRows,
 		};
 		console.log('Item inserito:', item);
-		setName('');
+		resetForm();
 	};
+
+	const addBonusRow = () => {
+		setBonusRows([...bonusRows, {bonus: '', selBonus: '', value: ''}]);
+	};
+
+	const removeBonusRow = (index: number) => {
+		if (bonusRows.length > 1) {
+			const newRows = bonusRows.filter((_, i) => i !== index);
+			setBonusRows(newRows);
+		}
+	};
+
+	const updateBonusRow = (index: number, field: keyof BonusRow, value: string) => {
+		const newRows = bonusRows.map((row, i) => {
+			if (i === index) {
+				return {...row, [field]: value};
+			}
+			return row;
+		});
+		setBonusRows(newRows);
+	};
+
+	const resetForm = () => {
+		setName('');
+		setType('');
+		setSlot('');
+		setRealm('');
+		setTradeable('Yes');
+		setModel('');
+		setRequiredLevel('');
+		setBonusLevel('');
+		setBonusRows([{bonus: '', selBonus: '', value: ''}]);
+	};
+
 
 	const formStyle: React.CSSProperties = {
 		display: 'flex',
@@ -304,6 +341,17 @@ const ComplexInsertObjectForm = () => {
 		padding: '10px',
 		fontSize: '16px',
 		backgroundColor: '#030bad',
+		color: 'white',
+		border: 'none',
+		borderRadius: '4px',
+		cursor: 'pointer',
+	};
+
+	const buttonStyleRemove: React.CSSProperties = {
+		padding: '10px',
+		marginTop: '18px',
+		fontSize: '10px',
+		backgroundColor: '#ad0303',
 		color: 'white',
 		border: 'none',
 		borderRadius: '4px',
@@ -420,51 +468,57 @@ const ComplexInsertObjectForm = () => {
 				</div>
 			</div>
 
-
 			<h3>Magical Bonuses</h3>
-			<div style={rowStyle}>
-				<div style={columnStyle}>
-					<label htmlFor="bonus">Bonus</label>
-					<select
-						value={bonus}
-						onChange={(e) => setBonus(e.target.value)}
-						style={inputStyle}
-					>
-						<option value="">Select Bonus</option>
-						{bonuses.map((opt) => (
-							<option key={opt} value={opt}>{opt}</option>
-						))}
-					</select>
+			{bonusRows.map((row, index) => (
+				<div key={index} style={rowStyle}>
+					<div style={columnStyle}>
+						<label htmlFor={`bonus-${index}`}>Bonus</label>
+						<select
+							value={row.bonus}
+							onChange={(e) => updateBonusRow(index, 'bonus', e.target.value)}
+							style={inputStyle}
+						>
+							<option value="">Select Bonus</option>
+							{bonuses.map((opt) => (
+								<option key={opt} value={opt}>{opt}</option>
+							))}
+						</select>
+					</div>
+					<div style={columnStyle}>
+						<label htmlFor={`selBonus-${index}`}>{row.bonus || "Select Bonus"}</label>
+						<select
+							value={row.selBonus}
+							onChange={(e) => updateBonusRow(index, 'selBonus', e.target.value)}
+							disabled={!row.bonus}
+							style={inputStyle}
+						>
+							{row.bonus && selBons[row.bonus as keyof typeof selBons].map((opt) => (
+								<option key={opt} value={opt}>{opt}</option>
+							))}
+						</select>
+					</div>
+					<div style={columnStyle}>
+						<label htmlFor={`value-${index}`}>Value</label>
+						<input
+							type="number"
+							value={row.value}
+							onChange={(e) => updateBonusRow(index, 'value', e.target.value)}
+							placeholder="Value"
+							required
+							min="1"
+							max="400"
+							style={inputStyle}
+						/>
+					</div>
+					{index > 0 && (
+						<button type="button" onClick={() => removeBonusRow(index)} style={buttonStyleRemove}>
+							X
+						</button>
+					)}
 				</div>
-				<div style={columnStyle}>
-					<label htmlFor="selBons">{bonus || "Select Bonus"}</label>
-					<select
-						value={selBonus}
-						onChange={(e) => setSelBonus(e.target.value)}
-						disabled={!bonus}
-						style={inputStyle}
-					>
-						{bonus && selBons[bonus as keyof typeof selBons].map((opt) => (
-							<option key={opt} value={opt}>{opt}</option>
-						))}
-					</select>
-				</div>
-				<div style={columnStyle}>
-					<label htmlFor="value">Value</label>
-					<input
-						type="number"
-						value={value}
-						onChange={(e) => setValue(e.target.value)}
-						placeholder="Value"
-						required
-						min="1"
-						max="400"
-						style={inputStyle}
-					/>
-				</div>
-			</div>
+			))}
 
-			<button type="button" style={buttonStyleAdd}>
+			<button type="button" onClick={addBonusRow} style={buttonStyleAdd}>
 				+
 			</button>
 			<br/>
@@ -472,7 +526,7 @@ const ComplexInsertObjectForm = () => {
 			<button type="submit" style={buttonStyle}>
 				Insert Item
 			</button>
-			<button type="button" style={buttonStyleClear}>
+			<button type="button" onClick={resetForm} style={buttonStyleClear}>
 				Clear
 			</button>
 		</form>
