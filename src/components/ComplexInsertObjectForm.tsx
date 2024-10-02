@@ -93,7 +93,6 @@ const ComplexInsertObjectForm = () => {
 		setSelBonus('');
 	}, [bonus]);
 
-	// Effettua la chiamata API e aggiorna lo stato
 	useEffect(() => {
 		// Funzione per chiamare il servizio REST
 		const fetchStat = async () => {
@@ -158,6 +157,90 @@ const ComplexInsertObjectForm = () => {
 		};
 
 		fetchToAs();
+	}, []);
+
+	useEffect(() => {
+		const fetchMagicSkills = async () => {
+			try {
+				const response = await fetch('http://localhost:8080/api/magic');
+				if (response.ok) {
+					const data: string[] = await response.json();
+					setSelBons((prevSelBons) => ({
+						...prevSelBons,
+						'Magic Skill': data,
+					}));
+				} else {
+					console.error('Errore nella risposta del servizio:', response.status);
+				}
+			} catch (error) {
+				console.error('Errore nella chiamata API:', error);
+			}
+		};
+
+		fetchMagicSkills();
+	}, []);
+
+	useEffect(() => {
+		const fetchMeleeSkills = async () => {
+			try {
+				const response = await fetch('http://localhost:8080/api/melee');
+				if (response.ok) {
+					const data: string[] = await response.json();
+					setSelBons((prevSelBons) => ({
+						...prevSelBons,
+						'Melee Skill': data,
+					}));
+				} else {
+					console.error('Errore nella risposta del servizio:', response.status);
+				}
+			} catch (error) {
+				console.error('Errore nella chiamata API:', error);
+			}
+		};
+
+		fetchMeleeSkills();
+	}, []);
+
+	useEffect(() => {
+		const fetchCapBonuses = async () => {
+			try {
+				const response = await fetch('http://localhost:8080/api/cap');
+				if (response.ok) {
+					const data: string[] = await response.json();
+					setSelBons((prevSelBons) => ({
+						...prevSelBons,
+						'Cap Bonus': data,
+					}));
+				} else {
+					console.error('Errore nella risposta del servizio:', response.status);
+				}
+			} catch (error) {
+				console.error('Errore nella chiamata API:', error);
+			}
+		};
+
+		fetchCapBonuses();
+	}, []);
+
+	useEffect(() => {
+		const fetchOthers = async () => {
+			try {
+				const response = await fetch('http://localhost:8080/api/other');
+				if (response.ok) {
+					const data: string[] = await response.json();
+					setSelBons((prevSelBons) => ({
+						...prevSelBons,
+						'Other': data,
+					}));
+				} else {
+					console.error('Errore nella risposta del servizio:', response.status);
+				}
+			} catch (error) {
+				console.error('Errore nella chiamata API:', error);
+			}
+		};
+
+		fetchOthers();
 	}, []);
 
 	const handleSubmit = (e: React.FormEvent) => {
