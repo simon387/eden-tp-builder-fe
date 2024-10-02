@@ -358,6 +358,12 @@ const ComplexInsertObjectForm = () => {
 		cursor: 'pointer',
 	};
 
+	const buttonStyleRemoveDisabled: React.CSSProperties = {
+		...buttonStyleRemove,
+		backgroundColor: '#cccccc',
+		cursor: 'not-allowed',
+	};
+
 	return (
 		<form onSubmit={handleSubmit} style={formStyle}>
 			<h3>Item Details</h3>
@@ -417,7 +423,7 @@ const ComplexInsertObjectForm = () => {
 						type="number"
 						value={model}
 						onChange={(e) => setModel(e.target.value)}
-						placeholder="Model"
+						placeholder="0"
 						required
 						min="1"
 						max="9999"
@@ -446,7 +452,7 @@ const ComplexInsertObjectForm = () => {
 						type="number"
 						value={requiredLevel}
 						onChange={(e) => setRequiredLevel(e.target.value)}
-						placeholder="Required Level"
+						placeholder="1"
 						required
 						min="1"
 						max="50"
@@ -459,7 +465,7 @@ const ComplexInsertObjectForm = () => {
 						type="number"
 						value={bonusLevel}
 						onChange={(e) => setBonusLevel(e.target.value)}
-						placeholder="Bonus Level"
+						placeholder="1"
 						required
 						min="1"
 						max="50"
@@ -503,18 +509,21 @@ const ComplexInsertObjectForm = () => {
 							type="number"
 							value={row.value}
 							onChange={(e) => updateBonusRow(index, 'value', e.target.value)}
-							placeholder="Value"
+							placeholder="0"
 							required
 							min="1"
 							max="400"
 							style={inputStyle}
 						/>
 					</div>
-					{index > 0 && (
-						<button type="button" onClick={() => removeBonusRow(index)} style={buttonStyleRemove}>
-							X
-						</button>
-					)}
+					<button
+						type="button"
+						onClick={() => removeBonusRow(index)}
+						style={index === 0 ? buttonStyleRemoveDisabled : buttonStyleRemove}
+						disabled={index === 0}
+					>
+						X
+					</button>
 				</div>
 			))}
 
