@@ -33,67 +33,72 @@ const ComplexInsertObjectForm = () => {
 		const fetchTypes = async () => {
 			try {
 				const response = await fetch('http://localhost:8080/api/itemType');
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-				const data = await response.json();
-				const formattedTypes = data.map((item: { type: string }) => item.type);
-				setTypes(formattedTypes);
-				if (formattedTypes.length > 0) {
-					setType(formattedTypes[0]); // Imposta il primo valore come default
+				if (response.ok) {
+					const data = await response.json();
+					const formattedTypes = data.map((item: { type: string }) => item.type);
+					setTypes(formattedTypes);
+					if (formattedTypes.length > 0) {
+						setType(formattedTypes[0]); // Imposta il primo valore come default
+					}
+				} else {
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
 				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		fetchTypes();
+		fetchTypes().then(() => {
+		});
 	}, []);
 
 	useEffect(() => {
 		const fetchSlots = async () => {
 			try {
 				const response = await fetch('http://localhost:8080/api/slot');
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-				const data = await response.json();
-				const formattedSlots = data.map((item: { slot: string }) => item.slot);
-				setSlots(formattedSlots);
-				if (formattedSlots.length > 0) {
-					setSlot(formattedSlots[0]); // Imposta il primo valore come default
+				if (response.ok) {
+					const data = await response.json();
+					const formattedSlots = data.map((item: { slot: string }) => item.slot);
+					setSlots(formattedSlots);
+					if (formattedSlots.length > 0) {
+						setSlot(formattedSlots[0]); // Imposta il primo valore come default
+					}
+				} else {
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
 				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		fetchSlots();
+		fetchSlots().then(() => {
+		});
 	}, []);
 
 	useEffect(() => {
 		const fetchRealms = async () => {
 			try {
 				const response = await fetch('http://localhost:8080/api/realm');
-				if (!response.ok) {
-					throw new Error('Network response was not ok');
-				}
-				const data = await response.json();
-				const formattedRealms = data.map((item: { name: string }) => item.name);
-				setRealms(formattedRealms);
-				if (formattedRealms.length > 0) {
-					setRealm(formattedRealms[0]); // Imposta il primo valore come default
+				if (response.ok) {
+					const data = await response.json();
+					const formattedRealms = data.map((item: { name: string }) => item.name);
+					setRealms(formattedRealms);
+					if (formattedRealms.length > 0) {
+						setRealm(formattedRealms[0]); // Imposta il primo valore come default
+					}
+				} else {
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
 				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		fetchRealms();
+		fetchRealms().then(() => {
+		});
 	}, []);
 
 	useEffect(() => {
-		// Funzione per chiamare il servizio REST
 		const fetchStat = async () => {
 			try {
 				const response = await fetch('http://localhost:8080/api/stat');
@@ -105,16 +110,16 @@ const ComplexInsertObjectForm = () => {
 						Stat: data, // Rimpiazza 'Stat' con i dati dall'API
 					}));
 				} else {
-					console.error('Errore nella risposta del servizio:', response.status);
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
-				console.error('Errore nella chiamata API:', error);
+				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		// Chiamata all'API
-		fetchStat();
-	}, []); // Esegui solo al montaggio del componente
+		fetchStat().then(() => {
+		});
+	}, []);
 
 	useEffect(() => {
 		const fetchResist = async () => {
@@ -127,14 +132,15 @@ const ComplexInsertObjectForm = () => {
 						Resist: data,
 					}));
 				} else {
-					console.error('Errore nella risposta del servizio:', response.status);
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
-				console.error('Errore nella chiamata API:', error);
+				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		fetchResist();
+		fetchResist().then(() => {
+		});
 	}, []);
 
 	useEffect(() => {
@@ -148,14 +154,15 @@ const ComplexInsertObjectForm = () => {
 						Toa: data,
 					}));
 				} else {
-					console.error('Errore nella risposta del servizio:', response.status);
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
-				console.error('Errore nella chiamata API:', error);
+				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		fetchToAs();
+		fetchToAs().then(() => {
+		});
 	}, []);
 
 	useEffect(() => {
@@ -169,14 +176,15 @@ const ComplexInsertObjectForm = () => {
 						'Magic Skill': data,
 					}));
 				} else {
-					console.error('Errore nella risposta del servizio:', response.status);
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
-				console.error('Errore nella chiamata API:', error);
+				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		fetchMagicSkills();
+		fetchMagicSkills().then(() => {
+		});
 	}, []);
 
 	useEffect(() => {
@@ -190,14 +198,15 @@ const ComplexInsertObjectForm = () => {
 						'Melee Skill': data,
 					}));
 				} else {
-					console.error('Errore nella risposta del servizio:', response.status);
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
-				console.error('Errore nella chiamata API:', error);
+				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		fetchMeleeSkills();
+		fetchMeleeSkills().then(() => {
+		});
 	}, []);
 
 	useEffect(() => {
@@ -211,14 +220,15 @@ const ComplexInsertObjectForm = () => {
 						'Cap Bonus': data,
 					}));
 				} else {
-					console.error('Errore nella risposta del servizio:', response.status);
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
-				console.error('Errore nella chiamata API:', error);
+				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		fetchCapBonuses();
+		fetchCapBonuses().then(() => {
+		});
 	}, []);
 
 	useEffect(() => {
@@ -232,14 +242,15 @@ const ComplexInsertObjectForm = () => {
 						'Other': data,
 					}));
 				} else {
-					console.error('Errore nella risposta del servizio:', response.status);
+					console.error('Network response was not ok', response.status);
 				}
 			} catch (error) {
-				console.error('Errore nella chiamata API:', error);
+				console.error('There was a problem with the fetch operation:', error);
 			}
 		};
 
-		fetchOthers();
+		fetchOthers().then(() => {
+		});
 	}, []);
 
 	const handleSubmit = (e: React.FormEvent) => {
