@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
+import * as styles from "@/components/Styles";
 
-// Tipi per TypeScript
 type SelBonsType = {
 	[key: string]: string[];
 };
@@ -303,84 +303,11 @@ const ComplexInsertObjectForm = () => {
 		setBonusRows([{bonus: bonuses[0], selBonus: selBons[bonuses[0]][0], value: ''}]);
 	};
 
-	const formStyle: React.CSSProperties = {
-		display: 'flex',
-		flexDirection: 'column',
-		gap: '15px',
-		maxWidth: '600px',
-		margin: '0 auto',
-	};
-
-	const rowStyle: React.CSSProperties = {
-		display: 'flex',
-		gap: '15px',
-	};
-
-	const columnStyle: React.CSSProperties = {
-		display: 'flex',
-		flexDirection: 'column',
-		flex: 1,
-	};
-
-	const inputStyle: React.CSSProperties = {
-		padding: '8px',
-		fontSize: '16px',
-		border: '1px solid #ccc',
-		borderRadius: '4px',
-	};
-
-	const buttonStyle: React.CSSProperties = {
-		padding: '10px',
-		fontSize: '16px',
-		backgroundColor: '#4CAF50',
-		color: 'white',
-		border: 'none',
-		borderRadius: '4px',
-		cursor: 'pointer',
-	};
-
-	const buttonStyleClear: React.CSSProperties = {
-		padding: '10px',
-		fontSize: '16px',
-		backgroundColor: '#ad0303',
-		color: 'white',
-		border: 'none',
-		borderRadius: '4px',
-		cursor: 'pointer',
-	};
-
-	const buttonStyleAdd: React.CSSProperties = {
-		padding: '10px',
-		fontSize: '16px',
-		backgroundColor: '#030bad',
-		color: 'white',
-		border: 'none',
-		borderRadius: '4px',
-		cursor: 'pointer',
-	};
-
-	const buttonStyleRemove: React.CSSProperties = {
-		padding: '10px',
-		marginTop: '18px',
-		fontSize: '10px',
-		backgroundColor: '#ad0303',
-		color: 'white',
-		border: 'none',
-		borderRadius: '4px',
-		cursor: 'pointer',
-	};
-
-	const buttonStyleRemoveDisabled: React.CSSProperties = {
-		...buttonStyleRemove,
-		backgroundColor: '#cccccc',
-		cursor: 'not-allowed',
-	};
-
 	return (
-		<form onSubmit={handleSubmit} style={formStyle}>
+		<form onSubmit={handleSubmit} style={styles.formStyle}>
 			<h3>Item Details</h3>
-			<div style={rowStyle}>
-				<div style={columnStyle}>
+			<div style={styles.rowStyle}>
+				<div style={styles.columnStyle}>
 					<label htmlFor="name">Name</label>
 					<input
 						type="text"
@@ -388,15 +315,15 @@ const ComplexInsertObjectForm = () => {
 						onChange={(e) => setName(e.target.value)}
 						placeholder="Name"
 						required
-						style={inputStyle}
+						style={styles.inputStyle}
 					/>
 				</div>
-				<div style={columnStyle}>
+				<div style={styles.columnStyle}>
 					<label htmlFor="type">Type</label>
 					<select
 						value={type}
 						onChange={(e) => setType(e.target.value)}
-						style={inputStyle}
+						style={styles.inputStyle}
 					>
 						{types.map((opt) => (
 							<option key={opt} value={opt}>{opt}</option>
@@ -405,31 +332,31 @@ const ComplexInsertObjectForm = () => {
 				</div>
 			</div>
 
-			<div style={rowStyle}>
-				<div style={columnStyle}>
+			<div style={styles.rowStyle}>
+				<div style={styles.columnStyle}>
 					<label htmlFor="slot">Slot</label>
 					<select
 						value={slot}
 						onChange={(e) => setSlot(e.target.value)}
-						style={inputStyle}
+						style={styles.inputStyle}
 					>
 						{slots.map((opt) => (
 							<option key={opt} value={opt}>{opt}</option>
 						))}
 					</select>
 				</div>
-				<div style={columnStyle}>
+				<div style={styles.columnStyle}>
 					<label htmlFor="tradeable">Tradeable</label>
 					<select
 						value={tradeable}
 						onChange={(e) => setTradeable(e.target.value)}
-						style={inputStyle}
+						style={styles.inputStyle}
 					>
 						<option value="yes">Yes</option>
 						<option value="no">No</option>
 					</select>
 				</div>
-				<div style={columnStyle}>
+				<div style={styles.columnStyle}>
 					<label htmlFor="model">Model</label>
 					<input
 						type="number"
@@ -439,26 +366,26 @@ const ComplexInsertObjectForm = () => {
 						required
 						min="1"
 						max="9999"
-						style={inputStyle}
+						style={styles.inputStyle}
 					/>
 				</div>
 			</div>
 
 			<h3>Restrictions</h3>
-			<div style={rowStyle}>
-				<div style={columnStyle}>
+			<div style={styles.rowStyle}>
+				<div style={styles.columnStyle}>
 					<label htmlFor="realm">Realm</label>
 					<select
 						value={realm}
 						onChange={(e) => setRealm(e.target.value)}
-						style={inputStyle}
+						style={styles.inputStyle}
 					>
 						{realms.map((opt) => (
 							<option key={opt} value={opt}>{opt}</option>
 						))}
 					</select>
 				</div>
-				<div style={columnStyle}>
+				<div style={styles.columnStyle}>
 					<label htmlFor="requiredLevel">Required Level</label>
 					<input
 						type="number"
@@ -468,10 +395,10 @@ const ComplexInsertObjectForm = () => {
 						required
 						min="1"
 						max="50"
-						style={inputStyle}
+						style={styles.inputStyle}
 					/>
 				</div>
-				<div style={columnStyle}>
+				<div style={styles.columnStyle}>
 					<label htmlFor="bonusLevel">Bonus Level</label>
 					<input
 						type="number"
@@ -481,40 +408,41 @@ const ComplexInsertObjectForm = () => {
 						required
 						min="1"
 						max="50"
-						style={inputStyle}
+						style={styles.inputStyle}
 					/>
 				</div>
 			</div>
 
 			<h3>Magical Bonuses</h3>
 			{bonusRows.map((row, index) => (
-				<div key={index} style={rowStyle}>
-					<div style={columnStyle}>
+				<div key={index} style={styles.rowStyle}>
+					<div style={styles.columnStyle}>
 						<label htmlFor={`bonus-${index}`}>Bonus</label>
 						<select
 							value={row.bonus}
 							onChange={(e) => updateBonusRow(index, 'bonus', e.target.value)}
-							style={inputStyle}
+							style={styles.inputStyle}
 						>
+							{/*<option>Select</option>*/}
 							{bonuses.map((opt) => (
 								<option key={opt} value={opt}>{opt}</option>
 							))}
 						</select>
 					</div>
-					<div style={columnStyle}>
+					<div style={styles.columnStyle}>
 						<label htmlFor={`selBonus-${index}`}>{row.bonus || "Select Bonus"}</label>
 						<select
 							value={row.selBonus}
 							onChange={(e) => updateBonusRow(index, 'selBonus', e.target.value)}
 							disabled={!row.bonus}
-							style={inputStyle}
+							style={styles.inputStyle}
 						>
 							{row.bonus && selBons[row.bonus as keyof typeof selBons].map((opt) => (
 								<option key={opt} value={opt}>{opt}</option>
 							))}
 						</select>
 					</div>
-					<div style={columnStyle}>
+					<div style={styles.columnStyle}>
 						<label htmlFor={`value-${index}`}>Value</label>
 						<input
 							type="number"
@@ -524,13 +452,13 @@ const ComplexInsertObjectForm = () => {
 							required
 							min="1"
 							max="400"
-							style={inputStyle}
+							style={styles.inputStyle}
 						/>
 					</div>
 					<button
 						type="button"
 						onClick={() => removeBonusRow(index)}
-						style={index === 0 ? buttonStyleRemoveDisabled : buttonStyleRemove}
+						style={index === 0 ? styles.buttonStyleRemoveDisabled : styles.buttonStyleRemove}
 						disabled={index === 0}
 					>
 						X
@@ -538,15 +466,15 @@ const ComplexInsertObjectForm = () => {
 				</div>
 			))}
 
-			<button type="button" onClick={addBonusRow} style={buttonStyleAdd}>
+			<button type="button" onClick={addBonusRow} style={styles.buttonStyleAdd}>
 				+
 			</button>
 			<br/>
 			<br/>
-			<button type="submit" style={buttonStyle}>
+			<button type="submit" style={styles.buttonStyle}>
 				Insert Item
 			</button>
-			<button type="button" onClick={resetForm} style={buttonStyleClear}>
+			<button type="button" onClick={resetForm} style={styles.buttonStyleClear}>
 				Clear
 			</button>
 		</form>
