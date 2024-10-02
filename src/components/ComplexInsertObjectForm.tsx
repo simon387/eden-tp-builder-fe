@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import * as styles from "@/components/Styles";
+import * as styles from "@/styles/Styles";
 
 type SelBonsType = {
 	[key: string]: string[];

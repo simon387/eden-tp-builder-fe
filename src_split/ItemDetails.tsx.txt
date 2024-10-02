@@ -1,0 +1,102 @@
+import React from 'react';
+import { useTypes } from '../hooks/useTypes';
+import { useSlots } from '../hooks/useSlots';
+import * as styles from "../styles/formStyles";
+
+type ItemDetailsProps = {
+	formData: {
+		name: string;
+		type: string;
+		slot: string;
+		tradeable: string;
+		model: string;
+	};
+	updateFormData: (field: string, value: string) => void;
+};
+
+const ItemDetails: React.FC<ItemDetailsProps> = ({ formData, updateFormData }) => {
+	const types = useTypes();
+	const slots = useSlots();
+
+	return (
+		<>
+			<h3>Item Details</h3>
+			<div style={styles.rowStyle}>
+				<div style={styles.columnStyle}>
+					<label htmlFor="name">Name</label>
+					<input
+						type="text"
+						id="name"
+						value={formData.name}
+						onChange={(e) => updateFormData('name', e.target.value)}
+						placeholder="Item Name"
+						required
+						style={styles.inputStyle}
+					/>
+				</div>
+				<div style={styles.columnStyle}>
+					<label htmlFor="type">Type</label>
+					<select
+						id="type"
+						value={formData.type}
+						onChange={(e) => updateFormData('type', e.target.value)}
+						style={styles.inputStyle}
+						required
+					>
+						{types.map((type) => (
+							<option key={type} value={type}>{type}</option>
+						))}
+					</select>
+				</div>
+			</div>
+
+			<div style={styles.rowStyle}>
+				<div style={styles.columnStyle}>
+					<label htmlFor="slot">Slot</label>
+					<select
+						id="slot"
+						value={formData.slot}
+						onChange={(e) => updateFormData('slot', e.target.value)}
+						style={styles.inputStyle}
+						required
+					>
+						{slots.map((slot) => (
+							<option key={slot} value={slot}>{slot}</option>
+						))}
+					</select>
+				</div>
+				<div style={styles.columnStyle}>
+					<label htmlFor="tradeable">Tradeable</label>
+					<select
+						id="tradeable"
+						value={formData.tradeable}
+						onChange={(e) => updateFormData('tradeable', e.target.value)}
+						style={styles.inputStyle}
+					>
+						<option value="Yes">Yes</option>
+						<option value="No">No</option>
+					</select>
+				</div>
+			</div>
+
+			<div style={styles.rowStyle}>
+				<div style={styles.columnStyle}>
+					<label htmlFor="model">Model</label>
+					<input
+						type="number"
+						id="model"
+						value={formData.model}
+						onChange={(e) => updateFormData('model', e.target.value)}
+						placeholder="Model Number"
+						min="1"
+						max="9999"
+						style={styles.inputStyle}
+						required
+					/>
+				</div>
+			</div>
+		</>
+	);
+};
+
+export default ItemDetails;

@@ -1,0 +1,105 @@
+import React from 'react';
+import { useBonuses } from '../hooks/useBonuses';
+import * as styles from "../styles/formStyles";
+
+type BonusRow = {
+	bonus: string;
+	selBonus: string;
+	value: string;
+};
+
+type MagicalBonusesProps = {
+	formData: {
+		bonusRows: BonusRow[];
+	};
+	updateFormData: (field: string, value: any) => void;
+};
+
+const MagicalBonuses: React.FC<MagicalBonusesProps> = ({ formData, updateFormData }) => {
+	const { bonuses, selBons } = useBonuses();
+
+	const handleBonusChange = (index: number, field: keyof BonusRow, value: string) => {
+		const newBonusRows = formData.bonusRows.map((row, i) =>
+			i === index ? { ...row, [field]: value } : row
+		);
+		updateFormData('bonusRows', newBonusRows);
+	};
+
+	const handleAddBonusRow = () => {
+		const newBonusRows = [...formData.bonusRows, { bonus: '', selBonus: '', value: '' }];
+		updateFormData('bonusRows', newBonusRows);
+	};
+
+	const handleRemoveBonusRow = (index: number) => {
+		if (formData.bonusRows.length > 1) {
+			const newBonusRows = formData.bonusRows.filter((_, i) => i !== index);
+			updateFormData('bonusRows', newBonusRows);
+		}
+	};
+
+	return (
+		<>
+			<h3>Magical Bonuses</h3>
+			{formData.bonusRows.map((row, index) => (
+				<div key={index} style={styles.rowStyle}>
+					<div style={styles.columnStyle}>
+						<label htmlFor={`bonus-${index}`}>Bonus Type</label>
+						<select
+							id={`bonus-${index}`}
+							value={row.bonus}
+							onChange={(e) => handleBonusChange(index, 'bonus', e.target.value)}
+							style={styles.inputStyle}
+							required
+						>
+							{bonuses.map((bonus) => (
+								<option key={bonus} value={bonus}>{bonus}</option>
+							))}
+						</select>
+					</div>
+					<div style={styles.columnStyle}>
+						<label htmlFor={`selBonus-${index}`}>Specific Bonus</label>
+						<select
+							id={`selBonus-${index}`}
+							value={row.selBonus}
+							onChange={(e) => handleBonusChange(index, 'selBonus', e.target.value)}
+							disabled={!row.bonus}
+							style={styles.inputStyle}
+							required
+						>
+							{row.bonus && selBons[row.bonus] && selBons[row.bonus].map((opt) => (
+								<option key={opt} value={opt}>{opt}</option>
+							))}
+						</select>
+					</div>
+					<div style={styles.columnStyle}>
+						<label htmlFor={`value-${index}`}>Value</label>
+						<input
+							type="number"
+							id={`value-${index}`}
+							value={row.value}
+							onChange={(e) => handleBonusChange(index, 'value', e.target.value)}
+							placeholder="Bonus Value"
+							min="1"
+							max="400"
+							style={styles.inputStyle}
+							required
+						/>
+					</div>
+					<button
+						type="button"
+						onClick={() => handleRemoveBonusRow(index)}
+						style={formData.bonusRows.length === 1 ? styles.buttonStyleRemoveDisabled : styles.buttonStyleRemove}
+						disabled={formData.bonusRows.length === 1}
+					>
+						Remove
+					</button>
+				</div>
+			))}
+			<button type="button" onClick={handleAddBonusRow} style={styles.buttonStyleAdd}>
+				Add Bonus
+			</button>
+		</>
+	);
+};
+
+export default MagicalBonuses;

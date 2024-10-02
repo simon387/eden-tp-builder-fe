@@ -1,0 +1,68 @@
+import React from 'react';
+import { useRealms } from '../hooks/useRealms';
+import * as styles from "../styles/formStyles";
+
+type RestrictionsProps = {
+	formData: {
+		realm: string;
+		requiredLevel: string;
+		bonusLevel: string;
+	};
+	updateFormData: (field: string, value: string) => void;
+};
+
+const Restrictions: React.FC<RestrictionsProps> = ({ formData, updateFormData }) => {
+	const realms = useRealms();
+
+	return (
+		<>
+			<h3>Restrictions</h3>
+			<div style={styles.rowStyle}>
+				<div style={styles.columnStyle}>
+					<label htmlFor="realm">Realm</label>
+					<select
+						id="realm"
+						value={formData.realm}
+						onChange={(e) => updateFormData('realm', e.target.value)}
+						style={styles.inputStyle}
+						required
+					>
+						{realms.map((realm) => (
+							<option key={realm} value={realm}>{realm}</option>
+						))}
+					</select>
+				</div>
+				<div style={styles.columnStyle}>
+					<label htmlFor="requiredLevel">Required Level</label>
+					<input
+						type="number"
+						id="requiredLevel"
+						value={formData.requiredLevel}
+						onChange={(e) => updateFormData('requiredLevel', e.target.value)}
+						placeholder="Required Level"
+						min="1"
+						max="50"
+						style={styles.inputStyle}
+						required
+					/>
+				</div>
+				<div style={styles.columnStyle}>
+					<label htmlFor="bonusLevel">Bonus Level</label>
+					<input
+						type="number"
+						id="bonusLevel"
+						value={formData.bonusLevel}
+						onChange={(e) => updateFormData('bonusLevel', e.target.value)}
+						placeholder="Bonus Level"
+						min="1"
+						max="50"
+						style={styles.inputStyle}
+						required
+					/>
+				</div>
+			</div>
+		</>
+	);
+};
+
+export default Restrictions;

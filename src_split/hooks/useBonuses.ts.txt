@@ -1,0 +1,72 @@
+import { useState, useEffect } from 'react';
+
+type SelBonsType = {
+	[key: string]: string[];
+};
+
+type BonusRow = {
+	bonus: string;
+	selBonus: string;
+	value: string;
+};
+
+export const useBonuses = () => {
+	const [bonuses] = useState(['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other']);
+	const [selBons, setSelBons] = useState<SelBonsType>({});
+	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
+		{ bonus: '', selBonus: '', value: '' }
+	]);
+
+	useEffect(() => {
+		const fetchBonusesData = async () => {
+			const endpoints = [
+				{ key: 'Stat', url: 'http://localhost:8080/api/stat' },
+				{ key: 'Resist', url: 'http://localhost:8080/api/resist' },
+				{ key: 'Toa', url: 'http://localhost:8080/api/toa' },
+				{ key: 'Magic Skill', url: 'http://localhost:8080/api/magic' },
+				{ key: 'Melee Skill', url: 'http://localhost:8080/api/melee' },
+				{ key: 'Cap Bonus', url: 'http://localhost:8080/api/cap' },
+				{ key: 'Other', url: 'http://localhost:8080/api/other' }
+			];
+
+			for (const endpoint of endpoints) {
+				try {
+					const response = await fetch(endpoint.url);
+					if (response.ok) {
+						const data: string[] = await response.json();
+						setSelBons(prev => ({ ...prev, [endpoint.key]: data }));
+					} else {
+						console.error(`Network response was not ok for ${endpoint.key}`, response.status);
+					}
+				} catch (error) {
+					console.error(`There was a problem fetching ${endpoint.key}:`, error);
+				}
+			}
+		};
+
+		fetchBonusesData();
+	}, []);
+
+	const addBonusRow = () => {
+		setBonusRows([...bonusRows, { bonus: '', selBonus: '', value: '' }]);
+	};
+
+	const removeBonusRow = (index: number) => {
+		if (bonusRows.length > 1) {
+			const newRows = bonusRows.filter((_, i) => i !== index);
+			setBonusRows(newRows);
+		}
+	};
+
+	const updateBonusRow = (index: number, field: keyof BonusRow, value: string) => {
+		const newRows = bonusRows.map((row, i) => {
+			if (i === index) {
+				return { ...row, [field]: value };
+			}
+			return row;
+		});
+		setBonusRows(newRows);
+	};
+
+	return { bonuses, selBons, bonusRows, addBonusRow, removeBonusRow, updateBonusRow };
+};
