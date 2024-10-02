@@ -37,11 +37,11 @@ const ComplexInsertObjectForm = () => {
 					throw new Error('Network response was not ok');
 				}
 				const data = await response.json();
-
-				// Estraiamo solo i valori 'type' mantenendo la capitalizzazione originale
 				const formattedTypes = data.map((item: { type: string }) => item.type);
-
 				setTypes(formattedTypes);
+				if (formattedTypes.length > 0) {
+					setType(formattedTypes[0]); // Imposta il primo valore come default
+				}
 			} catch (error) {
 				console.error('There was a problem with the fetch operation:', error);
 			}
@@ -58,10 +58,11 @@ const ComplexInsertObjectForm = () => {
 					throw new Error('Network response was not ok');
 				}
 				const data = await response.json();
-
 				const formattedSlots = data.map((item: { slot: string }) => item.slot);
-
 				setSlots(formattedSlots);
+				if (formattedSlots.length > 0) {
+					setSlot(formattedSlots[0]); // Imposta il primo valore come default
+				}
 			} catch (error) {
 				console.error('There was a problem with the fetch operation:', error);
 			}
@@ -78,10 +79,11 @@ const ComplexInsertObjectForm = () => {
 					throw new Error('Network response was not ok');
 				}
 				const data = await response.json();
-
 				const formattedRealms = data.map((item: { name: string }) => item.name);
-
 				setRealms(formattedRealms);
+				if (formattedRealms.length > 0) {
+					setRealm(formattedRealms[0]); // Imposta il primo valore come default
+				}
 			} catch (error) {
 				console.error('There was a problem with the fetch operation:', error);
 			}
@@ -280,16 +282,15 @@ const ComplexInsertObjectForm = () => {
 
 	const resetForm = () => {
 		setName('');
-		setType('');
-		setSlot('');
-		setRealm('');
+		setType(types.length > 0 ? types[0] : '');
+		setSlot(slots.length > 0 ? slots[0] : '');
+		setRealm(realms.length > 0 ? realms[0] : '');
 		setTradeable('Yes');
 		setModel('');
 		setRequiredLevel('');
 		setBonusLevel('');
-		setBonusRows([{bonus: '', selBonus: '', value: ''}]);
+		setBonusRows([{bonus: bonuses[0], selBonus: selBons[bonuses[0]][0], value: ''}]);
 	};
-
 
 	const formStyle: React.CSSProperties = {
 		display: 'flex',
@@ -484,7 +485,6 @@ const ComplexInsertObjectForm = () => {
 							onChange={(e) => updateBonusRow(index, 'bonus', e.target.value)}
 							style={inputStyle}
 						>
-							<option value="">Select Bonus</option>
 							{bonuses.map((opt) => (
 								<option key={opt} value={opt}>{opt}</option>
 							))}
