@@ -450,7 +450,7 @@ const ComplexInsertObjectForm = () => {
 						style={index === 0 ? styles.buttonStyleRemoveDisabled : styles.buttonStyleRemove}
 						disabled={index === 0}
 					>
-						X
+						Remove
 					</button>
 				</div>
 			))}
