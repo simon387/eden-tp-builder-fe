@@ -1,0 +1,27 @@
+import { useState } from 'react';
+
+const initialFormState = {
+	name: '',
+	type: '',
+	slot: '',
+	realm: '',
+	tradeable: 'Yes',
+	model: '',
+	requiredLevel: '',
+	bonusLevel: '',
+	bonusRows: [{ bonus: '', selBonus: '', value: '' }]
+};
+
+export const useFormData = () => {
+	const [formData, setFormData] = useState(initialFormState);
+
+	const updateFormData = (field: string, value: any) => {
+		setFormData(prev => ({ ...prev, [field]: value }));
+	};
+
+	const resetForm = () => {
+		setFormData(initialFormState);
+	};
+
+	return { formData, updateFormData, resetForm };
+};

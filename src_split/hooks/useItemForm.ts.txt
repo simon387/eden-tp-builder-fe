@@ -1,0 +1,17 @@
+import React, { useState } from 'react';
+
+export const useItemForm = (initialData: { name: string; type: string; slot: string; realm: string; tradeable: string; model: string; requiredLevel: string; bonusLevel: string; bonusRows: { bonus: string; selBonus: string; value: string; }[]; }) => {
+	const [formData, setFormData] = useState(initialData);
+
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		console.log('Item inserito:', formData);
+		resetForm();
+	};
+
+	const resetForm = () => {
+		setFormData(initialData);
+	};
+
+	return { handleSubmit, resetForm };
+};
