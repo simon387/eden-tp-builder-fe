@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import * as styles from "@/styles/Styles";
+import * as styles from "@/styles/formStyles";
 import {useSlots} from "@/hooks/useSlots";
+import {useTypes} from "@/hooks/useTypes";
+import {useRealms} from "@/hooks/useRealms";
 
 type SelBonsType = {
 	[key: string]: string[];
@@ -21,8 +23,6 @@ const ComplexInsertObjectForm = () => {
 	const [model, setModel] = useState('');
 	const [requiredLevel, setRequiredLevel] = useState('');
 	const [bonusLevel, setBonusLevel] = useState('');
-	const [types, setTypes] = useState<string[]>([]);
-	const [realms, setRealms] = useState<string[]>([]);
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
 	const [selBons, setSelBons] = useState<SelBonsType>({});
 	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
@@ -30,52 +30,8 @@ const ComplexInsertObjectForm = () => {
 	]);
 
 	const slots = useSlots();
-
-	useEffect(() => {
-		const fetchTypes = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/itemType');
-				if (response.ok) {
-					const data = await response.json();
-					const formattedTypes = data.map((item: { type: string }) => item.type);
-					setTypes(formattedTypes);
-					if (formattedTypes.length > 0) {
-						setType(formattedTypes[0]); // Imposta il primo valore come default
-					}
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchTypes().then(() => {
-		});
-	}, []);
-
-	useEffect(() => {
-		const fetchRealms = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/realm');
-				if (response.ok) {
-					const data = await response.json();
-					const formattedRealms = data.map((item: { name: string }) => item.name);
-					setRealms(formattedRealms);
-					if (formattedRealms.length > 0) {
-						setRealm(formattedRealms[0]); // Imposta il primo valore come default
-					}
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchRealms().then(() => {
-		});
-	}, []);
+	const types = useTypes();
+	const realms = useRealms();
 
 	useEffect(() => {
 		const fetchStat = async () => {

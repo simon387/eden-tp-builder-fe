@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useEffect, useState} from 'react';
 
 export const useRealms = () => {
 	const [realms, setRealms] = useState<string[]>([]);
@@ -19,7 +19,8 @@ export const useRealms = () => {
 			}
 		};
 
-		fetchRealms();
+		fetchRealms().then(() => {
+		});
 	}, []);
 
 	return realms;

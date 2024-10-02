@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import {useEffect, useState} from 'react';
 
 export const useTypes = () => {
 	const [types, setTypes] = useState([]);
@@ -19,7 +19,8 @@ export const useTypes = () => {
 			}
 		};
 
-		fetchTypes();
+		fetchTypes().then(() => {
+		});
 	}, []);
 
 	return types;
