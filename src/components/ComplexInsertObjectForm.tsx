@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import * as styles from "@/styles/Styles";
+import {useSlots} from "@/hooks/useSlots";
 
 type SelBonsType = {
 	[key: string]: string[];
@@ -21,13 +22,14 @@ const ComplexInsertObjectForm = () => {
 	const [requiredLevel, setRequiredLevel] = useState('');
 	const [bonusLevel, setBonusLevel] = useState('');
 	const [types, setTypes] = useState<string[]>([]);
-	const [slots, setSlots] = useState<string[]>([]);
 	const [realms, setRealms] = useState<string[]>([]);
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
 	const [selBons, setSelBons] = useState<SelBonsType>({});
 	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
 		{bonus: '', selBonus: '', value: ''}
 	]);
+
+	const slots = useSlots();
 
 	useEffect(() => {
 		const fetchTypes = async () => {
@@ -49,29 +51,6 @@ const ComplexInsertObjectForm = () => {
 		};
 
 		fetchTypes().then(() => {
-		});
-	}, []);
-
-	useEffect(() => {
-		const fetchSlots = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/slot');
-				if (response.ok) {
-					const data = await response.json();
-					const formattedSlots = data.map((item: { slot: string }) => item.slot);
-					setSlots(formattedSlots);
-					if (formattedSlots.length > 0) {
-						setSlot(formattedSlots[0]); // Imposta il primo valore come default
-					}
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchSlots().then(() => {
 		});
 	}, []);
 
