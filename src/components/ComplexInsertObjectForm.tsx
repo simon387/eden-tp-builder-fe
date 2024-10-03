@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import * as styles from "@/styles/formStyles";
 import {useSlots} from "@/hooks/useSlots";
 import {useTypes} from "@/hooks/useTypes";
 import {useRealms} from "@/hooks/useRealms";
 import * as mapper from "@/components/DTOMapper";
-import {BonusRow, SelBonsType} from "@/components/types";
+import {BonusRow} from "@/components/types";
+import {useBonuses} from "@/hooks/useBonuses";
 
 const ComplexInsertObjectForm = () => {
 	const [name, setName] = useState('');
@@ -16,7 +17,6 @@ const ComplexInsertObjectForm = () => {
 	const [requiredLevel, setRequiredLevel] = useState('50');
 	const [bonusLevel, setBonusLevel] = useState('50');
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
-	const [selBons, setSelBons] = useState<SelBonsType>({});
 	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
 		{bonus: bonuses[0], selBonus: '', value: ''}
 	]);
@@ -24,161 +24,7 @@ const ComplexInsertObjectForm = () => {
 	const slots = useSlots();
 	const types = useTypes();
 	const realms = useRealms();
-
-	useEffect(() => {
-		const fetchStat = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/stat');
-				if (response.ok) {
-					const data: string[] = await response.json();
-					// Aggiorna solo la chiave 'Stat' del tuo stato
-					setSelBons((prevSelBons) => ({
-						...prevSelBons,
-						Stat: data, // Rimpiazza 'Stat' con i dati dall'API
-					}));
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchStat().then(() => {
-		});
-	}, []);
-
-	useEffect(() => {
-		const fetchResist = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/resist');
-				if (response.ok) {
-					const data: string[] = await response.json();
-					setSelBons((prevSelBons) => ({
-						...prevSelBons,
-						Resist: data,
-					}));
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchResist().then(() => {
-		});
-	}, []);
-
-	useEffect(() => {
-		const fetchToAs = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/toa');
-				if (response.ok) {
-					const data: string[] = await response.json();
-					setSelBons((prevSelBons) => ({
-						...prevSelBons,
-						Toa: data,
-					}));
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchToAs().then(() => {
-		});
-	}, []);
-
-	useEffect(() => {
-		const fetchMagicSkills = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/magic');
-				if (response.ok) {
-					const data: string[] = await response.json();
-					setSelBons((prevSelBons) => ({
-						...prevSelBons,
-						'Magic Skill': data,
-					}));
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchMagicSkills().then(() => {
-		});
-	}, []);
-
-	useEffect(() => {
-		const fetchMeleeSkills = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/melee');
-				if (response.ok) {
-					const data: string[] = await response.json();
-					setSelBons((prevSelBons) => ({
-						...prevSelBons,
-						'Melee Skill': data,
-					}));
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchMeleeSkills().then(() => {
-		});
-	}, []);
-
-	useEffect(() => {
-		const fetchCapBonuses = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/cap');
-				if (response.ok) {
-					const data: string[] = await response.json();
-					setSelBons((prevSelBons) => ({
-						...prevSelBons,
-						'Cap Bonus': data,
-					}));
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchCapBonuses().then(() => {
-		});
-	}, []);
-
-	useEffect(() => {
-		const fetchOthers = async () => {
-			try {
-				const response = await fetch('http://localhost:8080/api/other');
-				if (response.ok) {
-					const data: string[] = await response.json();
-					setSelBons((prevSelBons) => ({
-						...prevSelBons,
-						'Other': data,
-					}));
-				} else {
-					console.error('Network response was not ok', response.status);
-				}
-			} catch (error) {
-				console.error('There was a problem with the fetch operation:', error);
-			}
-		};
-
-		fetchOthers().then(() => {
-		});
-	}, []);
+	const selBons = useBonuses();
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
