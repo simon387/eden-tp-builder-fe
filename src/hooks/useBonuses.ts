@@ -1,21 +1,8 @@
 import { useState, useEffect } from 'react';
-
-type SelBonsType = {
-	[key: string]: string[];
-};
-
-type BonusRow = {
-	bonus: string;
-	selBonus: string;
-	value: string;
-};
+import {SelBonsType} from "@/components/types";
 
 export const useBonuses = () => {
-	const [bonuses] = useState(['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other']);
 	const [selBons, setSelBons] = useState<SelBonsType>({});
-	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
-		{ bonus: '', selBonus: '', value: '' }
-	]);
 
 	useEffect(() => {
 		const fetchBonusesData = async () => {
@@ -44,29 +31,8 @@ export const useBonuses = () => {
 			}
 		};
 
-		fetchBonusesData();
+		fetchBonusesData().then(() => {});
 	}, []);
 
-	const addBonusRow = () => {
-		setBonusRows([...bonusRows, { bonus: '', selBonus: '', value: '' }]);
-	};
-
-	const removeBonusRow = (index: number) => {
-		if (bonusRows.length > 1) {
-			const newRows = bonusRows.filter((_, i) => i !== index);
-			setBonusRows(newRows);
-		}
-	};
-
-	const updateBonusRow = (index: number, field: keyof BonusRow, value: string) => {
-		const newRows = bonusRows.map((row, i) => {
-			if (i === index) {
-				return { ...row, [field]: value };
-			}
-			return row;
-		});
-		setBonusRows(newRows);
-	};
-
-	return { bonuses, selBons, bonusRows, addBonusRow, removeBonusRow, updateBonusRow };
+	return  selBons ;
 };
