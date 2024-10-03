@@ -6,3 +6,4 @@
 
 + pagine
 + comp localhost
++ from loki
