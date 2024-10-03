@@ -48,7 +48,7 @@ const ComplexInsertObjectForm = () => {
 			resists: mapper.convertBonusRowsToResistsDTO(bonusRows),
 			others: mapper.convertBonusRowsToOthersDTO(bonusRows),
 		};
-		console.log('Item che verrà salvato:', itemDTO);
+		console.log('Try to save this item:', itemDTO);
 
 		fetch('http://localhost:8080/api/item', {
 			method: 'POST',
@@ -66,7 +66,6 @@ const ComplexInsertObjectForm = () => {
 				alert(error);
 				console.error('Error:', error);
 			});
-
 	};
 
 	const addBonusRow = () => {
@@ -88,8 +87,7 @@ const ComplexInsertObjectForm = () => {
 		const newRows = bonusRows.map((row, i) => {
 			if (i === index) {
 				const updatedRow = { ...row, [field]: value };
-				// Se si aggiorna il campo 'bonus', aggiorna anche il 'selBonus'
-				if (field === 'bonus') {
+				if (field === 'bonus') {  // Se si aggiorna il campo 'bonus', aggiorna anche il 'selBonus'
 					updatedRow.selBonus = selBons[value]?.[0] || '';  // Imposta il primo valore disponibile
 				}
 				return updatedRow;
