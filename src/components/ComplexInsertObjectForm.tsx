@@ -48,7 +48,7 @@ const ComplexInsertObjectForm = () => {
 			resists: mapper.convertBonusRowsToResistsDTO(bonusRows),
 			others: mapper.convertBonusRowsToOthersDTO(bonusRows),
 		};
-		console.log('Item conv:', itemDTO);
+		console.log('Item che verrà salvato:', itemDTO);
 
 		fetch('http://localhost:8080/api/item', {
 			method: 'POST',
@@ -61,7 +61,7 @@ const ComplexInsertObjectForm = () => {
 			.then(data => console.log('Success:', data))
 			.catch(error => console.error('Error:', error));
 
-		// resetForm();
+		resetForm();
 	};
 
 	const addBonusRow = () => {
