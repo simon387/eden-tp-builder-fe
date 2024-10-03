@@ -58,7 +58,6 @@ export const buttonStyleAdd: React.CSSProperties = {
 
 export const buttonStyleRemove: React.CSSProperties = {
 	padding: '10px',
-	marginTop: '18px',
 	fontSize: '10px',
 	backgroundColor: '#ad0303',
 	color: 'white',
