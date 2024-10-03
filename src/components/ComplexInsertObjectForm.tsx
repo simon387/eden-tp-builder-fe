@@ -3,16 +3,8 @@ import * as styles from "@/styles/formStyles";
 import {useSlots} from "@/hooks/useSlots";
 import {useTypes} from "@/hooks/useTypes";
 import {useRealms} from "@/hooks/useRealms";
-
-type SelBonsType = {
-	[key: string]: string[];
-};
-
-type BonusRow = {
-	bonus: string;
-	selBonus: string;
-	value: string;
-};
+import * as mapper from "@/components/DTOMapper";
+import {BonusRow, SelBonsType} from "@/components/types";
 
 const ComplexInsertObjectForm = () => {
 	const [name, setName] = useState('');
@@ -20,9 +12,9 @@ const ComplexInsertObjectForm = () => {
 	const [slot, setSlot] = useState('');
 	const [realm, setRealm] = useState('');
 	const [tradeable, setTradeable] = useState('Yes');
-	const [model, setModel] = useState('');
-	const [requiredLevel, setRequiredLevel] = useState('');
-	const [bonusLevel, setBonusLevel] = useState('');
+	const [model, setModel] = useState('1000');
+	const [requiredLevel, setRequiredLevel] = useState('50');
+	const [bonusLevel, setBonusLevel] = useState('50');
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
 	const [selBons, setSelBons] = useState<SelBonsType>({});
 	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
@@ -190,19 +182,29 @@ const ComplexInsertObjectForm = () => {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		const item = {
-			name,
-			type,
-			slot,
-			realm,
-			tradeable,
-			model,
-			requiredLevel,
-			bonusLevel,
-			bonuses: bonusRows,
+
+		const itemDTO = {
+			name: name,
+			type: type,
+			slot: slot,
+			realm: realm,
+			requiredLevel: parseInt(requiredLevel),
+			bonusLevel: parseInt(bonusLevel),
+			model: parseInt(model),
+			tradeable: tradeable === 'Yes',
+			utility: 0,
+			level: 0,
+			stats: mapper.convertStatRowsToStatDTO(bonusRows),
+			capBonuses: mapper.convertBonusRowsToCapBonusDTO(bonusRows),
+			toas: mapper.convertBonusRowsToToasDTO(bonusRows),
+			melees: mapper.convertBonusRowsToMeleesDTO(bonusRows),
+			magics: mapper.convertBonusRowsToMagicsDTO(bonusRows),
+			resists: mapper.convertBonusRowsToResistsDTO(bonusRows),
+			others: mapper.convertBonusRowsToOthersDTO(bonusRows),
 		};
-		console.log('Item inserito:', item);
-		resetForm();
+		console.log('Item conv:', itemDTO);
+
+		// resetForm();
 	};
 
 	const addBonusRow = () => {
@@ -241,9 +243,9 @@ const ComplexInsertObjectForm = () => {
 		setSlot(slots.length > 0 ? slots[0] : '');
 		setRealm(realms.length > 0 ? realms[0] : '');
 		setTradeable('Yes');
-		setModel('');
-		setRequiredLevel('');
-		setBonusLevel('');
+		setModel('1000');
+		setRequiredLevel('50');
+		setBonusLevel('50');
 		// Imposta selBonus come il primo valore della lista corrispondente a 'Stat'
 		setBonusRows([{ bonus: bonuses[0], selBonus: selBons[bonuses[0]]?.[0] || '', value: '' }]);
 	};
