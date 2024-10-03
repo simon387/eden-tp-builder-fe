@@ -224,7 +224,6 @@ const ComplexInsertObjectForm = () => {
 			{bonusRows.map((row, index) => (
 				<div key={index} style={styles.rowStyle}>
 					<div style={styles.columnStyle}>
-						<label htmlFor={`bonus-${index}`}>Bonus</label>
 						<select
 							value={row.bonus}
 							onChange={(e) => updateBonusRow(index, 'bonus', e.target.value)}
@@ -236,7 +235,6 @@ const ComplexInsertObjectForm = () => {
 						</select>
 					</div>
 					<div style={styles.columnStyle}>
-						<label htmlFor={`selBonus-${index}`}>{row.bonus || "Select Bonus"}</label>
 						<select
 							value={row.selBonus}
 							onChange={(e) => updateBonusRow(index, 'selBonus', e.target.value)}
@@ -249,7 +247,6 @@ const ComplexInsertObjectForm = () => {
 						</select>
 					</div>
 					<div style={styles.columnStyle}>
-						<label htmlFor={`value-${index}`}>Value</label>
 						<input
 							type="number"
 							value={row.value}
