@@ -211,7 +211,7 @@ const ComplexInsertObjectForm = () => {
 						type="number"
 						value={bonusLevel}
 						onChange={(e) => setBonusLevel(e.target.value)}
-						placeholder="1"
+						placeholder="0"
 						required
 						min="0"
 						max="50"
