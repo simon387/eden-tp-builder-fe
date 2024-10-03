@@ -13,9 +13,9 @@ const ComplexInsertObjectForm = () => {
 	const [slot, setSlot] = useState('');
 	const [realm, setRealm] = useState('');
 	const [tradeable, setTradeable] = useState('Yes');
-	const [model, setModel] = useState('1000');
-	const [requiredLevel, setRequiredLevel] = useState('50');
-	const [bonusLevel, setBonusLevel] = useState('50');
+	const [model, setModel] = useState('');
+	const [requiredLevel, setRequiredLevel] = useState('');
+	const [bonusLevel, setBonusLevel] = useState('');
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
 	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
 		{bonus: bonuses[0], selBonus: '', value: ''}
@@ -105,9 +105,9 @@ const ComplexInsertObjectForm = () => {
 		setSlot(slots.length > 0 ? slots[0] : '');
 		setRealm(realms.length > 0 ? realms[0] : '');
 		setTradeable('Yes');
-		setModel('1000');
-		setRequiredLevel('50');
-		setBonusLevel('50');
+		setModel('');
+		setRequiredLevel('');
+		setBonusLevel('');
 		// Imposta selBonus come il primo valore della lista corrispondente a 'Stat'
 		setBonusRows([{ bonus: bonuses[0], selBonus: selBons[bonuses[0]]?.[0] || '', value: '' }]);
 	};
