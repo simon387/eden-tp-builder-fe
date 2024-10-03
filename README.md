@@ -7,3 +7,4 @@
 + pagine
 + comp localhost
 + from loki
++ ordine AZ tendine
