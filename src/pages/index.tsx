@@ -12,7 +12,8 @@ export default function Home() {
 			<h1 style={{
 				textAlign: 'center',
 				marginBottom: '20px',
-				color: '#333'
+				color: '#333',
+				margin: 0
 			}}>
 				Insert New Item
 			</h1>

@@ -72,3 +72,7 @@ export const buttonStyleRemoveDisabled: React.CSSProperties = {
 	backgroundColor: '#cccccc',
 	cursor: 'not-allowed',
 };
+
+export const h3Style: React.CSSProperties = {
+	margin: '10px 0 0 0',
+}
