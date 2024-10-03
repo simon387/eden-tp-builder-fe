@@ -266,14 +266,12 @@ const ComplexInsertObjectForm = () => {
 					>
 						Remove
 					</button>
+					<button type="button" onClick={addBonusRow} style={styles.buttonStyleAdd}>
+						+
+					</button>
 				</div>
 			))}
 
-			<button type="button" onClick={addBonusRow} style={styles.buttonStyleAdd}>
-				+
-			</button>
-			<br/>
-			<br/>
 			<button type="submit" style={styles.buttonStyle}>
 				Insert Item
 			</button>
