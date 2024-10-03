@@ -58,10 +58,15 @@ const ComplexInsertObjectForm = () => {
 			body: JSON.stringify(itemDTO),
 		})
 			.then(response => response.json())
-			.then(data => console.log('Success:', data))
-			.catch(error => console.error('Error:', error));
+			.then(data => {
+				console.log('Success:', data);
+				resetForm();
+			})
+			.catch(error => {
+				alert(error);
+				console.error('Error:', error);
+			});
 
-		resetForm();
 	};
 
 	const addBonusRow = () => {
