@@ -112,7 +112,7 @@ const ComplexInsertObjectForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit} style={styles.formStyle}>
-			<h3>Item Details</h3>
+			<h3 style={styles.h3Style}>Item Details</h3>
 			<div style={styles.rowStyle}>
 				<div style={styles.columnStyle}>
 					<label htmlFor="name">Name</label>
@@ -178,7 +178,7 @@ const ComplexInsertObjectForm = () => {
 				</div>
 			</div>
 
-			<h3>Restrictions</h3>
+			<h3 style={styles.h3Style}>Restrictions</h3>
 			<div style={styles.rowStyle}>
 				<div style={styles.columnStyle}>
 					<label htmlFor="realm">Realm</label>
@@ -220,7 +220,7 @@ const ComplexInsertObjectForm = () => {
 				</div>
 			</div>
 
-			<h3>Magical Bonuses</h3>
+			<h3 style={styles.h3Style}>Magical Bonuses</h3>
 			{bonusRows.map((row, index) => (
 				<div key={index} style={styles.rowStyle}>
 					<div style={styles.columnStyle}>
