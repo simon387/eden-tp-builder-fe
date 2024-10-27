@@ -16,6 +16,7 @@ const ComplexInsertObjectForm = () => {
 	const [model, setModel] = useState('');
 	const [requiredLevel, setRequiredLevel] = useState('');
 	const [bonusLevel, setBonusLevel] = useState('');
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 	const bonuses = ['Stat', 'Resist', 'Toa', 'Magic Skill', 'Melee Skill', 'Cap Bonus', 'Other'];
 	const [bonusRows, setBonusRows] = useState<BonusRow[]>([
 		{bonus: bonuses[0], selBonus: '', value: ''}
@@ -68,6 +69,62 @@ const ComplexInsertObjectForm = () => {
 			});
 	};
 
+	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		if (e.target.files && e.target.files.length > 0) {
+			setSelectedFile(e.target.files[0]);
+		}
+	};
+
+	const handleXmlUpload = () => {
+		if (!selectedFile) {
+			alert('Please select a file first');
+			return;
+		}
+
+		// Leggiamo il contenuto del file come testo
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			const xmlContent = e.target?.result as string;
+
+			// Inviamo il contenuto XML direttamente nel body
+			fetch('http://localhost:8080/api/item/xml', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/xml',  // Specifichiamo che stiamo inviando XML
+				},
+				body: xmlContent,  // Il contenuto XML va direttamente nel body
+			})
+				.then(response => {
+					if (!response.ok) {
+						throw new Error('Network response was not ok');
+					}
+					return response.json();
+				})
+				.then(data => {
+					console.log('Success:', data);
+					alert('XML file uploaded successfully');
+					setSelectedFile(null);
+					// Reset the file input
+					const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+					if (fileInput) {
+						fileInput.value = '';
+					}
+				})
+				.catch(error => {
+					alert('Error uploading XML file: ' + error.message);
+					console.error('Error:', error);
+				});
+		};
+
+		reader.onerror = (error) => {
+			alert('Error reading file: ' + error);
+			console.error('Error reading file:', error);
+		};
+
+		// Iniziamo a leggere il file come testo
+		reader.readAsText(selectedFile);
+	};
+
 	const addBonusRow = () => {
 		const firstBonus = bonuses[0];
 		setBonusRows([
@@ -106,8 +163,13 @@ const ComplexInsertObjectForm = () => {
 		setModel('');
 		setRequiredLevel('');
 		setBonusLevel('');
-		// Imposta selBonus come il primo valore della lista corrispondente a 'Stat'
 		setBonusRows([{ bonus: bonuses[0], selBonus: selBons[bonuses[0]]?.[0] || '', value: '' }]);
+		setSelectedFile(null);
+		// Reset the file input
+		const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+		if (fileInput) {
+			fileInput.value = '';
+		}
 	};
 
 	return (
@@ -278,6 +340,33 @@ const ComplexInsertObjectForm = () => {
 			<button type="button" onClick={resetForm} style={styles.buttonStyleClear}>
 				Clear
 			</button>
+
+			<div style={{...styles.rowStyle, marginTop: '2rem', borderTop: '1px solid #ccc', paddingTop: '1rem'}}>
+				<div style={styles.columnStyle}>
+					<label htmlFor="xmlFile">Upload LOKI item File (XML File)</label>
+					<input
+						type="file"
+						id="xmlFile"
+						accept=".xml"
+						onChange={handleFileChange}
+						style={styles.inputStyle}
+					/>
+				</div>
+				<div style={styles.columnStyle}>
+					<button
+						type="button"
+						onClick={handleXmlUpload}
+						style={{
+							...styles.buttonStyle,
+							backgroundColor: '#4a5568',
+							marginTop: '1.5rem'
+						}}
+						disabled={!selectedFile}
+					>
+						Upload Item
+					</button>
+				</div>
+			</div>
 		</form>
 	);
 };

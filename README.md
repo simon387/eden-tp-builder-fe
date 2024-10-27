@@ -5,6 +5,4 @@
 ## todos
 
 + pagine
-+ comp localhost
-+ from loki
 
